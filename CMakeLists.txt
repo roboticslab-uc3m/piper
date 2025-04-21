@@ -31,7 +31,9 @@ add_executable(test_piper src/cpp/test.cpp)
 
 # ---- fmt ---
 
-if(NOT DEFINED FMT_DIR)
+find_package(fmt)
+
+if(NOT fmt_FOUND AND NOT DEFINED FMT_DIR)
   set(FMT_VERSION "10.0.0")
   set(FMT_DIR "${CMAKE_CURRENT_BINARY_DIR}/fi")
 
@@ -44,13 +46,17 @@ if(NOT DEFINED FMT_DIR)
     CMAKE_ARGS -DFMT_TEST:BOOL=OFF  # Don't build all the tests
   )
   add_dependencies(piper_lib fmt_external)
+  # add_library(fmt::fmt ALIAS fmt)
 endif()
 
 # ---- spdlog ---
 
-if(NOT DEFINED SPDLOG_DIR)
+find_package(spdlog)
+
+if(NOT spdlog_FOUND AND NOT DEFINED SPDLOG_DIR)
   set(SPDLOG_DIR "${CMAKE_CURRENT_BINARY_DIR}/si")
   set(SPDLOG_VERSION "1.12.0")
+  include(ExternalProject)
   ExternalProject_Add(
     spdlog_external
     PREFIX "${CMAKE_CURRENT_BINARY_DIR}/s"
@@ -64,6 +70,7 @@ endif()
 
 if(NOT DEFINED PIPER_PHONEMIZE_DIR)
   set(PIPER_PHONEMIZE_DIR "${CMAKE_CURRENT_BINARY_DIR}/pi")
+  include(ExternalProject)
   ExternalProject_Add(
     piper_phonemize_external
     PREFIX "${CMAKE_CURRENT_BINARY_DIR}/p"
