@@ -83,9 +83,8 @@ endif()
 
 if((NOT MSVC) AND (NOT APPLE))
   # Linux flags
-  string(APPEND CMAKE_CXX_FLAGS " -Wall -Wextra -Wl,-rpath,'$ORIGIN'")
+  string(APPEND CMAKE_CXX_FLAGS " -Wall -Wextra")
   string(APPEND CMAKE_C_FLAGS " -Wall -Wextra")
-  # target_link_options(piper_lib PUBLIC -static-libgcc -static-libstdc++)
 
   set(PIPER_EXTRA_LIBRARIES "pthread")
 endif()
@@ -130,8 +129,6 @@ add_test(
   NAME test_piper
   COMMAND test_piper "${CMAKE_SOURCE_DIR}/etc/test_voice.onnx" "${PIPER_PHONEMIZE_DIR}/share/espeak-ng-data" "${CMAKE_CURRENT_BINARY_DIR}/test.wav"
 )
-
-target_compile_features(test_piper PUBLIC cxx_std_17)
 
 # ---- Declare install targets ----
 
