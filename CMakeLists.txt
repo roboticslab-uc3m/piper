@@ -22,6 +22,9 @@ elseif(NOT APPLE)
   string(APPEND CMAKE_C_FLAGS " -Wall -Wextra")
 endif()
 
+# Required in roboticslab-uc3m projects
+find_package(YCM REQUIRED)
+
 add_library(piper_lib SHARED src/cpp/piper.cpp)
 add_executable(piper src/cpp/main.cpp)
 add_executable(test_piper src/cpp/test.cpp)
@@ -200,3 +203,6 @@ install(
   FILES ${PIPER_PHONEMIZE_DIR}/share/libtashkeel_model.ort
   DESTINATION ${CMAKE_INSTALL_PREFIX}
 )
+
+# Added by YCM
+include(AddUninstallTarget)
