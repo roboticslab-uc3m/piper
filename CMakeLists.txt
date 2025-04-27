@@ -91,9 +91,12 @@ endif()
 
 target_link_libraries(piper_lib
   PUBLIC
-    espeak-ng
     piper_phonemize
     onnxruntime
+  PRIVATE
+    fmt
+    spdlog
+    espeak-ng
     ${PIPER_EXTRA_LIBRARIES}
 )
 
