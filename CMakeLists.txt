@@ -138,9 +138,21 @@ add_test(
 
 include(CMakePackageConfigHelpers)
 
+set(PIPER_DATA_DIR "${PIPER_PHONEMIZE_DIR}/share")
+
 configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/Config.cmake.in
   "${CMAKE_CURRENT_BINARY_DIR}/piperConfig.cmake"
   INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/piper
+  PATH_VARS PIPER_DATA_DIR
+  INSTALL_PREFIX ${CMAKE_BINARY_DIR}
+)
+
+set(PIPER_DATA_DIR ${CMAKE_INSTALL_DATADIR})
+
+configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/Config.cmake.in
+  "${CMAKE_CURRENT_BINARY_DIR}/piperConfigInstall.cmake"
+  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/piper
+  PATH_VARS PIPER_DATA_DIR
 )
 
 write_basic_package_version_file(
@@ -168,9 +180,13 @@ install(
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/piper)
 
 install(
-  FILES
-    "${CMAKE_CURRENT_BINARY_DIR}/piperConfig.cmake"
-    "${CMAKE_CURRENT_BINARY_DIR}/piperConfigVersion.cmake"
+  FILES "${CMAKE_CURRENT_BINARY_DIR}/piperConfigInstall.cmake"
+  RENAME piperConfig.cmake
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/piper
+)
+
+install(
+  FILES "${CMAKE_CURRENT_BINARY_DIR}/piperConfigVersion.cmake"
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/piper
 )
 
