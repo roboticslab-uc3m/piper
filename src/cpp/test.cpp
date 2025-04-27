@@ -6,8 +6,8 @@
 #include <string>
 #include <vector>
 
-#include "json.hpp"
-#include "piper.hpp"
+#include "piper/json.hpp"
+#include "piper/piper.hpp"
 
 using namespace std;
 using json = nlohmann::json;

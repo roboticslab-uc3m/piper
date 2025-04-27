@@ -84,11 +84,12 @@ if((NOT MSVC) AND (NOT APPLE))
   set(PIPER_EXTRA_LIBRARIES "pthread")
 endif()
 
-target_link_libraries(piper_lib PUBLIC
-  espeak-ng
-  piper_phonemize
-  onnxruntime
-  ${PIPER_EXTRA_LIBRARIES}
+target_link_libraries(piper_lib
+  PUBLIC
+    espeak-ng
+    piper_phonemize
+    onnxruntime
+    ${PIPER_EXTRA_LIBRARIES}
 )
 
 target_link_libraries(piper piper_lib fmt spdlog)
@@ -96,16 +97,22 @@ target_link_libraries(test_piper piper_lib fmt spdlog)
 
 target_compile_features(piper_lib PUBLIC cxx_std_17)
 
-set_property(TARGET piper_lib PROPERTY PUBLIC_HEADER src/cpp/piper.hpp)
+set_property(TARGET piper_lib PROPERTY
+  PUBLIC_HEADER
+    include/piper/piper.hpp
+    include/piper/json.hpp)
 
-target_link_directories(piper_lib PUBLIC
-  $<BUILD_INTERFACE:${PIPER_PHONEMIZE_DIR}/lib>
-  $<INSTALL_INTERFACE:${CMAKE_INSTALL_LIBDIR}>
+target_link_directories(piper_lib
+  PUBLIC
+    $<BUILD_INTERFACE:${PIPER_PHONEMIZE_DIR}/lib>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_LIBDIR}>
 )
 
-target_include_directories(piper_lib PUBLIC
-  $<BUILD_INTERFACE:${PIPER_PHONEMIZE_DIR}/include>
-  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+target_include_directories(piper_lib
+  PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
+    $<BUILD_INTERFACE:${PIPER_PHONEMIZE_DIR}/include>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
 target_compile_definitions(piper_lib PUBLIC _PIPER_VERSION=${piper_version})
@@ -137,20 +144,24 @@ write_basic_package_version_file(
 
 install(
   TARGETS piper_lib
-  EXPORT piper)
+  EXPORT piper
+  PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/piper)
 
 install(TARGETS piper)
 
-export(TARGETS piper_lib
+export(
+  TARGETS piper_lib
   NAMESPACE piper::
   FILE piperTargets.cmake)
 
-install(EXPORT piper
+install(
+  EXPORT piper
   NAMESPACE piper::
   FILE piperTargets.cmake
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/piper)
 
-install(FILES
+install(
+  FILES
     "${CMAKE_CURRENT_BINARY_DIR}/piperConfig.cmake"
     "${CMAKE_CURRENT_BINARY_DIR}/piperConfigVersion.cmake"
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/piper

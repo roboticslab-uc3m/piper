@@ -30,8 +30,8 @@
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/spdlog.h>
 
-#include "json.hpp"
-#include "piper.hpp"
+#include "piper/json.hpp"
+#include "piper/piper.hpp"
 
 using namespace std;
 using json = nlohmann::json;
