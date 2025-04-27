@@ -121,6 +121,7 @@ target_include_directories(piper_lib
 )
 
 target_compile_definitions(piper_lib PUBLIC _PIPER_VERSION=${piper_version})
+target_compile_definitions(piper PRIVATE _PIPER_SHARE_DIR="${CMAKE_INSTALL_FULL_DATADIR}")
 
 # ---- Declare test ----
 include(CTest)
@@ -196,12 +197,12 @@ install(
 
 install(
   DIRECTORY ${PIPER_PHONEMIZE_DIR}/share/espeak-ng-data
-  DESTINATION ${CMAKE_INSTALL_PREFIX}
+  DESTINATION ${CMAKE_INSTALL_DATADIR}
 )
 
 install(
   FILES ${PIPER_PHONEMIZE_DIR}/share/libtashkeel_model.ort
-  DESTINATION ${CMAKE_INSTALL_PREFIX}
+  DESTINATION ${CMAKE_INSTALL_DATADIR}
 )
 
 # Added by YCM

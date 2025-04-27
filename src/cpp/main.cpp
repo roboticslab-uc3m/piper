@@ -33,6 +33,10 @@
 #include "piper/json.hpp"
 #include "piper/piper.hpp"
 
+#ifndef _PIPER_SHARE_DIR
+#error "_PIPER_SHARE_DIR not defined"
+#endif
+
 using namespace std;
 using json = nlohmann::json;
 
@@ -124,25 +128,7 @@ int main(int argc, char *argv[]) {
                chrono::duration<double>(endTime - startTime).count());
 
   // Get the path to the piper executable so we can locate espeak-ng-data, etc.
-  // next to it.
-#ifdef _MSC_VER
-  auto exePath = []() {
-    wchar_t moduleFileName[MAX_PATH] = {0};
-    GetModuleFileNameW(nullptr, moduleFileName, std::size(moduleFileName));
-    return filesystem::path(moduleFileName);
-  }();
-#else
-#ifdef __APPLE__
-  auto exePath = []() {
-    char moduleFileName[PATH_MAX] = {0};
-    uint32_t moduleFileNameSize = std::size(moduleFileName);
-    _NSGetExecutablePath(moduleFileName, &moduleFileNameSize);
-    return filesystem::path(moduleFileName);
-  }();
-#else
-  auto exePath = filesystem::canonical("/proc/self/exe");
-#endif
-#endif
+  auto sharePath = std::filesystem::absolute(_PIPER_SHARE_DIR);
 
   if (voice.phonemizeConfig.phonemeType == piper::eSpeakPhonemes) {
     spdlog::debug("Voice uses eSpeak phonemes ({})",
@@ -153,10 +139,7 @@ int main(int argc, char *argv[]) {
       piperConfig.eSpeakDataPath = runConfig.eSpeakDataPath.value().string();
     } else {
       // Assume next to piper executable
-      piperConfig.eSpeakDataPath =
-          std::filesystem::absolute(
-              exePath.parent_path().append("espeak-ng-data"))
-              .string();
+      piperConfig.eSpeakDataPath = sharePath.append("espeak-ng-data").string();
 
       spdlog::debug("espeak-ng-data directory is expected at {}",
                     piperConfig.eSpeakDataPath);
@@ -175,10 +158,7 @@ int main(int argc, char *argv[]) {
           runConfig.tashkeelModelPath.value().string();
     } else {
       // Assume next to piper executable
-      piperConfig.tashkeelModelPath =
-          std::filesystem::absolute(
-              exePath.parent_path().append("libtashkeel_model.ort"))
-              .string();
+      piperConfig.tashkeelModelPath = sharePath.append("libtashkeel_model.ort").string();
 
       spdlog::debug("libtashkeel model is expected at {}",
                     piperConfig.tashkeelModelPath.value());
