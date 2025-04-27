@@ -120,7 +120,7 @@ target_include_directories(piper_lib
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
-target_compile_definitions(piper_lib PUBLIC _PIPER_VERSION=${piper_version})
+target_compile_definitions(piper_lib PRIVATE _PIPER_VERSION=${piper_version})
 target_compile_definitions(piper PRIVATE _PIPER_SHARE_DIR="${CMAKE_INSTALL_FULL_DATADIR}")
 
 # ---- Declare test ----
