@@ -135,7 +135,8 @@ void parsePhonemizeConfig(json &configRoot, PhonemizeConfig &phonemizeConfig) {
 void parseSynthesisConfig(json &configRoot, SynthesisConfig &synthesisConfig) {
   // {
   //     "audio": {
-  //         "sample_rate": 22050
+  //         "sample_rate": 22050,
+  //         "quality": "medium"
   //     },
   //     "inference": {
   //         "noise_scale": 0.667,
@@ -153,6 +154,10 @@ void parseSynthesisConfig(json &configRoot, SynthesisConfig &synthesisConfig) {
     if (audioValue.contains("sample_rate")) {
       // Default sample rate is 22050 Hz
       synthesisConfig.sampleRate = audioValue.value("sample_rate", 22050);
+    }
+
+    if (audioValue.contains("quality")) {
+      synthesisConfig.quality = audioValue.value("quality", "");
     }
   }
 
@@ -194,6 +199,50 @@ void parseSynthesisConfig(json &configRoot, SynthesisConfig &synthesisConfig) {
 
 } /* parseSynthesisConfig */
 
+void parseLanguageConfig(json &configRoot, LanguageConfig &languageConfig) {
+  // {
+  //     "language": {
+  //         "code": "en_US",
+  //         "family": "en",
+  //         "region": "US",
+  //         "name_native": "English",
+  //         "name_english": "English",
+  //         "country_english": "United States"
+  //     }
+  // }
+
+  if (configRoot.contains("language")) {
+    auto languageValue = configRoot["language"];
+    if (languageValue.contains("code")) {
+      languageConfig.code = languageValue["code"].get<std::string>();
+    }
+
+    if (languageValue.contains("family")) {
+      languageConfig.family = languageValue["family"].get<std::string>();
+    }
+
+    if (languageValue.contains("region")) {
+      languageConfig.region = languageValue["region"].get<std::string>();
+    }
+
+    if (languageValue.contains("name_native")) {
+      languageConfig.nameNative =
+          languageValue["name_native"].get<std::string>();
+    }
+
+    if (languageValue.contains("name_english")) {
+      languageConfig.nameEnglish =
+          languageValue["name_english"].get<std::string>();
+    }
+
+    if (languageValue.contains("country_english")) {
+      languageConfig.countryEnglish =
+          languageValue["country_english"].get<std::string>();
+    }
+  }
+
+} /* parseLanguageConfig */
+
 void parseModelConfig(json &configRoot, ModelConfig &modelConfig) {
 
   modelConfig.numSpeakers = configRoot["num_speakers"].get<SpeakerId>();
@@ -209,6 +258,10 @@ void parseModelConfig(json &configRoot, ModelConfig &modelConfig) {
       (*modelConfig.speakerIdMap)[speakerName] =
           speakerItem.value().get<SpeakerId>();
     }
+  }
+
+  if (configRoot.contains("dataset")) {
+    modelConfig.dataset = configRoot["dataset"].get<std::string>();
   }
 
 } /* parseModelConfig */
@@ -315,6 +368,7 @@ void loadVoice(PiperConfig &config, std::string modelPath,
 
   parsePhonemizeConfig(voice.configRoot, voice.phonemizeConfig);
   parseSynthesisConfig(voice.configRoot, voice.synthesisConfig);
+  parseLanguageConfig(voice.configRoot, voice.languageConfig);
   parseModelConfig(voice.configRoot, voice.modelConfig);
 
   if (voice.modelConfig.numSpeakers > 1) {

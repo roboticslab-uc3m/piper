@@ -65,6 +65,9 @@ struct SynthesisConfig {
   // Extra silence
   float sentenceSilenceSeconds = 0.2f;
   std::optional<std::map<piper::Phoneme, float>> phonemeSilenceSeconds;
+
+  // extra
+  std::string quality;
 };
 
 struct ModelConfig {
@@ -72,6 +75,17 @@ struct ModelConfig {
 
   // speaker name -> id
   std::optional<std::map<std::string, SpeakerId>> speakerIdMap;
+
+  std::string dataset;
+};
+
+struct LanguageConfig {
+  std::string code;
+  std::string family;
+  std::string region;
+  std::string nameNative;
+  std::string nameEnglish;
+  std::string countryEnglish;
 };
 
 struct ModelSession {
@@ -93,6 +107,7 @@ struct Voice {
   json configRoot;
   PhonemizeConfig phonemizeConfig;
   SynthesisConfig synthesisConfig;
+  LanguageConfig languageConfig;
   ModelConfig modelConfig;
   ModelSession session;
 };
