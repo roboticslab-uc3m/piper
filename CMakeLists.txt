@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.13)
 
-project(piper C CXX)
+project(Piper C CXX)
 
 file(READ "${CMAKE_CURRENT_LIST_DIR}/VERSION" piper_version)
 string(STRIP ${piper_version} piper_version)
@@ -141,7 +141,7 @@ include(CMakePackageConfigHelpers)
 set(PIPER_DATA_DIR "${PIPER_PHONEMIZE_DIR}/share")
 
 configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/Config.cmake.in
-  "${CMAKE_CURRENT_BINARY_DIR}/piperConfig.cmake"
+  "${CMAKE_CURRENT_BINARY_DIR}/PiperConfig.cmake"
   INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/piper
   PATH_VARS PIPER_DATA_DIR
   INSTALL_PREFIX ${CMAKE_BINARY_DIR}
@@ -150,43 +150,43 @@ configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/Config.cmake.in
 set(PIPER_DATA_DIR ${CMAKE_INSTALL_DATADIR})
 
 configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/Config.cmake.in
-  "${CMAKE_CURRENT_BINARY_DIR}/piperConfigInstall.cmake"
+  "${CMAKE_CURRENT_BINARY_DIR}/PiperConfigInstall.cmake"
   INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/piper
   PATH_VARS PIPER_DATA_DIR
 )
 
 write_basic_package_version_file(
-  "${CMAKE_CURRENT_BINARY_DIR}/piperConfigVersion.cmake"
+  "${CMAKE_CURRENT_BINARY_DIR}/PiperConfigVersion.cmake"
   VERSION "${piper_version}"
   COMPATIBILITY AnyNewerVersion
 )
 
 install(
   TARGETS piper_lib
-  EXPORT piper
+  EXPORT Piper
   PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/piper)
 
 install(TARGETS piper)
 
 export(
   TARGETS piper_lib
-  NAMESPACE piper::
-  FILE piperTargets.cmake)
+  NAMESPACE Piper::
+  FILE PiperTargets.cmake)
 
 install(
-  EXPORT piper
-  NAMESPACE piper::
-  FILE piperTargets.cmake
+  EXPORT Piper
+  NAMESPACE Piper::
+  FILE PiperTargets.cmake
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/piper)
 
 install(
-  FILES "${CMAKE_CURRENT_BINARY_DIR}/piperConfigInstall.cmake"
-  RENAME piperConfig.cmake
+  FILES "${CMAKE_CURRENT_BINARY_DIR}/PiperConfigInstall.cmake"
+  RENAME PiperConfig.cmake
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/piper
 )
 
 install(
-  FILES "${CMAKE_CURRENT_BINARY_DIR}/piperConfigVersion.cmake"
+  FILES "${CMAKE_CURRENT_BINARY_DIR}/PiperConfigVersion.cmake"
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/piper
 )
 

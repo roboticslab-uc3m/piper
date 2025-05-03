@@ -2,6 +2,6 @@
 
 set_and_check(PIPER_DATA_DIR @PACKAGE_PIPER_DATA_DIR@)
 
-include("${CMAKE_CURRENT_LIST_DIR}/piperTargets.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/PiperTargets.cmake")
 
-check_required_components(piper)
+check_required_components(Piper)
