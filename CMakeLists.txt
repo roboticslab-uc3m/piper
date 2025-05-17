@@ -119,6 +119,7 @@ target_link_directories(piper_lib
 target_include_directories(piper_lib
   PUBLIC
     $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
+    $<BUILD_INTERFACE:${SPDLOG_DIR}/include>
     $<BUILD_INTERFACE:${PIPER_PHONEMIZE_DIR}/include>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
