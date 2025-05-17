@@ -112,6 +112,8 @@ set_property(TARGET piper_lib PROPERTY
 
 target_link_directories(piper_lib
   PUBLIC
+    $<BUILD_INTERFACE:${FMT_DIR}/lib>
+    $<BUILD_INTERFACE:${SPDLOG_DIR}/lib>
     $<BUILD_INTERFACE:${PIPER_PHONEMIZE_DIR}/lib>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_LIBDIR}>
 )
